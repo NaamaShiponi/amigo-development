@@ -1,5 +1,5 @@
 let mysql = require('mysql');
-var schedule = require('node-schedule-tz');
+var schedule = require('node-schedule');
 //var scheduleTZ = require('node-schedule-tz');
 const TelegramBot = require('node-telegram-bot-api');
 const token = '933304400:AAHMTQx-L2Q7uDTeDG9S0ayjkaKKeAWnPOc';
@@ -201,7 +201,7 @@ checkingIfSQL(){
     })
     this.persons = personsRandom;
     let date = new Date().toLocaleString("en-US", { timeZone: "Asia/Jerusalem" });
-    date = new Date(date);
+    // date = new Date(date);
     this.dialoges();
 
 
@@ -605,13 +605,18 @@ self.realySendMsg();
     console.log("timeS",timeS)
     let self = this;
     let date = new Date().toLocaleString("en-US", { timeZone: "Asia/Jerusalem" });
-    date = new Date(date);
+    // date = new Date(date);
     if ((typeof self.schNextTime != "undefined") && (self.schNextTime !== null))
       this.schNextTime.cancel();
-    console.log("schNextTime", timeS)
+    console.log("schNextTime", timeS, date);
 
     //if(typeof self.schNextTime !== "undefined"){
-    this.schNextTime = schedule.scheduleJob(timeS, 'Asia/Jerusalem', function () {
+    let rule = new schedule.RecurrenceRule();
+    rule.dayOfweek = day;
+    rule.hour = hour;
+    rule.minute = minute;
+    rule.tz = 'Asia/Jerusalem';
+    this.schNextTime = schedule.scheduleJob(rule, /*'Asia/Jerusalem',*/ function () {
       self.changesonDB();
     })
   }
@@ -722,8 +727,16 @@ self.realySendMsg();
   
     console.log("set timer to", timeS, "count:", this.count );
     let arrindexOfDelete =[];
-      this.sch = schedule.scheduleJob(timeS, 'Asia/Jerusalem', function () {
+    console.log("time is", timeS);
+    console.log("time now is", date6);
 
+    let rule = new schedule.RecurrenceRule();
+    rule.dayOfweek = day;
+    rule.hour = hour;
+    rule.minute = minute;
+    rule.tz = 'Asia/Jerusalem';
+      this.sch = schedule.scheduleJob(rule, /*'Asia/Jerusalem',*/ function () {
+        console.log("time is", timeS);
         self.fromPhoneNumToIdUser();
         //ךקרוא אחכ לריילי טיימ סנד
 
@@ -806,6 +819,9 @@ self.realySendMsg();
     let date = new Date().toLocaleString("en-US", { timeZone: "Asia/Jerusalem" });
     let timeS = "5" + ' ' + "17" + ' * * ' + "3";
     date = new Date(date);
+
+    console.log("time is", timeS);
+    console.log("time now is", date);
 
     let sch = schedule.scheduleJob(timeS, function () {
       let date1 = new Date().toLocaleString("en-US", { timeZone: "Asia/Jerusalem" });

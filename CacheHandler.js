@@ -154,14 +154,14 @@ let CacheHandler = class {
     let self = this
     let numberQ = null
     if (boolean == true) {
-      a.query("select dialogue from id_" + id + " WHERE ID = (SELECT MAX(ID) FROM amigoTeacher.id_" + id + ")", function (err, dialogue) {
+      a.query("select dialogue from id_" + id + " WHERE ID = (SELECT MAX(ID) FROM amigo_development.id_" + id + ")", function (err, dialogue) {
         if (err) console.log("err findTheQ id_.dialogue", err);
         if (dialogue && dialogue.length != 0 && dialogue[0].dialogue != null) {
           a.query("select sentencesIncluded from dialogues,groups where number=" + dialogue[0].dialogue + " and groupToOpen=numOfGroup", function (err, groupToOpen) {
             if (err) console.log("err findTheQ groups.sentencesIncluded", err);
             if (groupToOpen && groupToOpen.length != 0 && groupToOpen[0].sentencesIncluded != null) {
               let q = groupToOpen[0].sentencesIncluded.split(',')
-              a.query("select message from id_" + id + " WHERE ID = (SELECT MAX(ID) FROM amigoTeacher.id_" + id + ")", function (err, message) {
+              a.query("select message from id_" + id + " WHERE ID = (SELECT MAX(ID) FROM amigo_development.id_" + id + ")", function (err, message) {
                 if (err) console.log("err findTheQ id_.message", err);
                 if (message && message.length != 0 && message[0].message != null) {
                   a.query("select number from sentences where sentence='" + message[0].message + "'", function (err, numberSentences) {
@@ -291,7 +291,7 @@ let CacheHandler = class {
       });
     } else {
 
-      a.query("select dialogue from id_" + id + " WHERE ID = (SELECT MAX(ID) FROM amigoTeacher.id_" + id + ")", function (err, dialogue) {
+      a.query("select dialogue from id_" + id + " WHERE ID = (SELECT MAX(ID) FROM amigo_development.id_" + id + ")", function (err, dialogue) {
         if (err) console.log("err answer  id_.dialogue", err);
         if (dialogue && dialogue.length != 0 && dialogue[0].dialogue != null) {
           a.query("select " + groupToEnd + " from dialogues where number=" + dialogue[0].dialogue, function (err, dialogueNumber) {
